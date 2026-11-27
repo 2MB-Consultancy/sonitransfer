@@ -51,7 +51,6 @@ async function proxyRemitec(request, env) {
 const LEGAL_SLUGS = [
   "belmoney-terms",
   "complaints-policy",
-  "compliance-security",
   "cookie-policy",
   "privacy-policy",
   "refunds-cancellations",

@@ -67,7 +67,6 @@ for (const [locale, catalogue] of Object.entries(translations)) {
     // own name are meant to read the same in every language.
     const intentionallyShared = [
       /^legalLinks\./,
-      /^footer\.compliance$/,
       /^hero\.proof\[2\]\[1\]$/,
       /^communityPage\.funDayEyebrow$/,
       /^meta\.contact\.title$/,
