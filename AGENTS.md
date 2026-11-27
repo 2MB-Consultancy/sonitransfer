@@ -54,3 +54,11 @@ When implementing from a selected generated mock, treat that image as the source
 - `npm run build` writes `dist/client/index.html`, `dist/client/fr/index.html` and `dist/client/es/index.html`, each with its own `lang`, title, description, canonical and reciprocal `hreflang` set. The worker serves the matching shell for a deep link, so `/fr/communaute` gets the French `<head>`. Set `SITE_ORIGIN` when building for a domain other than `https://sonitransfer.com`.
 
 Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts/prepare-sites-build.mjs`, and `tests/sites-worker.test.mjs` intact so the same local prototype can be handed to Sites. Before a Sites handoff, run `npm run build` and `npm run test:sites`; the build must leave `dist/client/index.html`, `dist/server/index.js`, and `dist/.openai/hosting.json`.
+
+## Deployment
+
+- The repository is `github.com/2MB-Consultancy/sonitransfer`. Two long-lived branches map to two sites: `stagging` deploys to https://stagging.sonitransfer.com/ and `main` deploys to https://sonitransfer.com/. Branch name `stagging` matches the domain spelling on purpose.
+- Work flows feature branch → PR into `stagging` → review on staging → PR from `stagging` into `main` to go live. Do not push straight to `main`.
+- `.github/workflows/deploy-staging.yml` runs `scripts/deploy-staging.sh` (service `soni-staging-next.service`, port 3001, `/var/www/stagging-soni-transfer-com`). `.github/workflows/deploy-production.yml` runs `scripts/deploy-production.sh` (service `soni-production.service`, port 3003, `/var/www/sonitransfer-com`). Each deploy backs up the previous release and rolls back automatically if the health check fails.
+- Production deploys only run while the repository variable `PRODUCTION_DEPLOY_ENABLED` is `true`; staging uses `STAGING_DEPLOY_ENABLED`.
+- Apache proxies sonitransfer.com to port 3003 (`ops/apache/`). The old static site stays in `/var/www/soni-transfer-html` only to serve `.well-known/` (including the Apple Pay merchant verification file) and the Google Search Console file; keep those aliases when editing the vhost. Old `.html` URLs redirect to the matching new pages.

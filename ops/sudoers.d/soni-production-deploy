@@ -1,0 +1,2 @@
+# Allow the deployment account to restart only the Soni Transfer production service.
+mbah ALL=(root) NOPASSWD: /bin/systemctl restart soni-production.service

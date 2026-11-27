@@ -1,0 +1,23 @@
+[Unit]
+Description=Soni Transfer production website (sonitransfer.com)
+After=network.target
+
+[Service]
+Type=simple
+User=madani-webuser
+Group=webdev
+WorkingDirectory=/var/www/sonitransfer-com
+Environment=NODE_ENV=production
+Environment=PORT=3003
+Environment=HOSTNAME=127.0.0.1
+Environment=REMITEC_API_BASE_URL=https://app.sonitransfer.com/api
+ExecStart=/usr/bin/npm run start -- --hostname 127.0.0.1 --port 3003
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/var/www/sonitransfer-com
+
+[Install]
+WantedBy=multi-user.target
