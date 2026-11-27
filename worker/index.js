@@ -38,6 +38,12 @@ async function proxyRemitec(request, env) {
     headers.set("Cache-Control", "no-store");
     headers.set("X-Soni-Data-Source", "live");
     headers.delete("Set-Cookie");
+    // fetch() has already decompressed the body, so the upstream encoding and
+    // compressed length no longer describe it. Passing them on made browsers
+    // hang or truncate the JSON.
+    headers.delete("Content-Encoding");
+    headers.delete("Content-Length");
+    headers.delete("Transfer-Encoding");
 
     return new Response(upstream.body, { status: upstream.status, headers });
   } catch {
