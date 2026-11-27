@@ -286,18 +286,16 @@ export const fr = {
     company: "Entreprise",
     community: "Communauté",
     ourStory: "Notre histoire",
-    compliance: "Compliance & Security",
     legalNav: "Informations légales",
   },
 
   legalLinks: {
-    "compliance-security": "Compliance & Security",
     "privacy-policy": "Privacy Policy",
     "cookie-policy": "Cookie Policy",
     "terms-conditions": "Terms & Conditions",
     "complaints-policy": "Complaints Policy",
-    "refunds-cancellations": "Refunds & Cancellations",
-    "belmoney-terms": "Belmoney Terms",
+    "refunds-cancellations": "Refunds and Cancellations Policy",
+    "belmoney-terms": "Belmoney Terms & Conditions",
   },
 
   legal: {

@@ -2,7 +2,7 @@ name: Deploy staging
 
 on:
   push:
-    branches: [main]
+    branches: [stagging]
   workflow_dispatch:
 
 concurrency:

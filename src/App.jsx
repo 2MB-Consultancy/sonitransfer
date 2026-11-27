@@ -444,7 +444,6 @@ function DownloadAndReviews() {
 }
 
 const legalSlugs = [
-  "compliance-security",
   "privacy-policy",
   "cookie-policy",
   "terms-conditions",
@@ -480,7 +479,6 @@ function Footer() {
           <h3>{copy.footer.company}</h3>
           <a href={href("community")}>{copy.footer.community}</a>
           <a href={href("community", "our-story")}>{copy.footer.ourStory}</a>
-          <a href={href("legal/compliance-security")}>{copy.footer.compliance}</a>
         </div>
       </div>
 
