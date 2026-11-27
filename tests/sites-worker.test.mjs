@@ -129,6 +129,34 @@ test("proxies calculator requests to the live Remitec route without fallback dat
   assert.deepEqual(await response.json(), { SellRates: 92, Fees: [] });
 });
 
+test("drops upstream encoding headers because fetch has already decoded the body", async () => {
+  // Remitec gzips its responses and fetch() unzips them. Forwarding the
+  // upstream Content-Encoding and compressed Content-Length with the unzipped
+  // body made browsers hang (body shorter than the length) or cut the JSON
+  // off (body longer than the length), which broke the calculator.
+  const body = JSON.stringify({ SellRates: 93.5, Fees: [{ Value: 1 }] });
+  const response = await worker.fetch(
+    new Request("https://example.test/api/remitec/quotation/1/11"),
+    {
+      ASSETS: { fetch: async () => new Response("missing", { status: 404 }) },
+      REMITEC_FETCH: async () =>
+        new Response(body, {
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Content-Encoding": "gzip",
+            "Content-Length": "12",
+            "Transfer-Encoding": "chunked",
+          },
+        }),
+    },
+  );
+
+  assert.equal(response.headers.get("content-encoding"), null);
+  assert.equal(response.headers.get("content-length"), null);
+  assert.equal(response.headers.get("transfer-encoding"), null);
+  assert.equal(await response.text(), body);
+});
+
 test("returns an honest calculator error when the upstream service fails", async () => {
   const response = await worker.fetch(
     new Request("https://example.test/api/remitec/currencies-from"),
